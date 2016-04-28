@@ -1,11 +1,16 @@
 package coinmachine;
 import java.util.Scanner;
+import gui.CoinMachineUI;
+
 
 /**
  * Console dialog for inserting coins into Coin machine.
  * @author James Brucker
  *
  */
+
+
+
 public class Demo {
 	// create a java.util.Scanner object for use in all methods
 	private static Scanner console = new Scanner( System.in );
