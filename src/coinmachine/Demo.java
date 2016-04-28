@@ -1,4 +1,5 @@
 package coinmachine;
+import java.util.Observer;
 import java.util.Scanner;
 import gui.CoinMachineUI;
 
@@ -67,7 +68,11 @@ public class Demo {
 		CoinMachine machine = new CoinMachine( capacity );
 		Demo demo = new Demo();
 		//TODO add observers
+		Observer testObserver = new ObserverTest();
+		CoinMachineUI a = new CoinMachineUI();
+		machine.addObserver(testObserver);
 		demo.insertDialog(machine);
+		a.run();
 	}
 }
 
