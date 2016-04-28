@@ -1,7 +1,9 @@
 package coinmachine;
+import java.awt.EventQueue;
 import java.util.Observer;
 import java.util.Scanner;
 import gui.CoinMachineUI;
+import gui.CoinsUI;
 
 
 /**
@@ -15,7 +17,8 @@ import gui.CoinMachineUI;
 public class Demo {
 	// create a java.util.Scanner object for use in all methods
 	private static Scanner console = new Scanner( System.in );
-	
+	public final static int capacity = 10;  // how many coins the machine can hold
+	public static CoinMachine coinMachineRun = new CoinMachine(capacity);
 	
 	/** run the user interface */
 	public void insertDialog(CoinMachine machine) {
@@ -63,16 +66,24 @@ public class Demo {
 	 * @param args not used
 	 */
 	public static void main(String[] args) {
-		final int capacity = 10;  // how many coins the machine can hold
+	
 		
-		CoinMachine machine = new CoinMachine( capacity );
 		Demo demo = new Demo();
 		//TODO add observers
-		Observer testObserver = new ObserverTest();
-		CoinMachineUI a = new CoinMachineUI();
-		machine.addObserver(testObserver);
-		demo.insertDialog(machine);
-		a.run();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CoinMachineUI window = new CoinMachineUI(new CoinMachine(capacity));
+					CoinsUI window2 = new CoinsUI();
+					coinMachineRun.addObserver(window);
+					coinMachineRun.addObserver(window2);
+					window.run();
+					window2.run();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 }
 
