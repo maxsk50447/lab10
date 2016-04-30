@@ -5,9 +5,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.border.*;
 
 import coinmachine.*;
-import javafx.scene.layout.Border;
+
 
 /**
  * CoinMachine User Interface
@@ -21,7 +22,8 @@ public class CoinMachineUI extends JFrame implements Observer{
 	private JProgressBar progressBar;
 	private int currentBalance = 0;
 	private JLabel balance, status, insert;
-	private Border border;
+	private TitledBorder title;
+	private JPanel panel;
 	/**
 	 * Create the application.
 	 */
@@ -38,6 +40,7 @@ public class CoinMachineUI extends JFrame implements Observer{
 		setBounds(400, 100, 440, 265);
 		setVisible(true);
 		setResizable(false);
+		
 	}
 
 	/**
@@ -47,15 +50,18 @@ public class CoinMachineUI extends JFrame implements Observer{
 		
 		
 		getContentPane().setLayout(null);
+		getContentPane().setBackground(Color.black);
 		
 		balance = new JLabel("Balance:   " + 0 + " ");
 		balance.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		balance.setBounds(29, 31, 99, 16);
+		balance.setForeground(Color.white);
 		getContentPane().add(balance);
 		
 		status = new JLabel("Status: ");
 		status.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		status.setBounds(140, 31, 72, 16);
+		status.setForeground(Color.white);
 		getContentPane().add(status);
 		
 		progressBar = new JProgressBar();
@@ -65,26 +71,31 @@ public class CoinMachineUI extends JFrame implements Observer{
 		progressBar.setToolTipText("");
 		getContentPane().add(progressBar);
 		
-		insert = new JLabel("Insert Money");
-		insert.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		insert.setBounds(12, 60, 122, 26);
-		getContentPane().add(insert);
+	
+		panel = new JPanel();
+		panel.setBounds(12, 74, 407, 136);
+		panel.setBackground(Color.black);
+		getContentPane().add(panel);
+		
+		title = new TitledBorder("Insert Money");
+		title.setTitleColor(Color.white);
+		panel.setBorder(title);
 		
 		oneBahtButton = new JButton();
-		oneBahtButton.setBounds(12, 90, 132, 115);
-		getContentPane().add(oneBahtButton);
+		oneBahtButton.setBounds(22, 97, 122, 108);
+		panel.add(oneBahtButton);
 		oneBahtButton.setIcon(new ImageIcon(CoinMachineUI.class.getResource("/images/1baht.png")));
 		oneBahtButton.addActionListener(new coinButtonListener());
 		
 		fiveBahtButton = new JButton();
-		fiveBahtButton.setBounds(150, 90, 138, 115);
-		getContentPane().add(fiveBahtButton);
+		fiveBahtButton.setBounds(150, 97, 131, 108);
+		panel.add(fiveBahtButton);
 		fiveBahtButton.setIcon(new ImageIcon(CoinMachineUI.class.getResource("/images/5baht.png")));
 		fiveBahtButton.addActionListener(new coinButtonListener());
 		
 		tenBahtButton = new JButton();
-		tenBahtButton.setBounds(294, 90, 126, 115);
-		getContentPane().add(tenBahtButton);
+		tenBahtButton.setBounds(294, 97, 113, 108);
+		panel.add(tenBahtButton);
 		tenBahtButton.setIcon(new ImageIcon(CoinMachineUI.class.getResource("/images/10baht.png")));
 		tenBahtButton.addActionListener(new coinButtonListener());
 	}
@@ -93,7 +104,7 @@ public class CoinMachineUI extends JFrame implements Observer{
 	 */
 	class coinButtonListener implements ActionListener{
 
-		@Override
+			@Override
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
 			Coin coin = null;
@@ -118,7 +129,10 @@ public class CoinMachineUI extends JFrame implements Observer{
 		currentBalance = ((CoinMachine) info).getBalance();
 		balance.setText("Balance:   "+ currentBalance);
 		progressBar.setValue(((CoinMachine) info).getCount());
-		if(progressBar.getValue() == progressBar.getMaximum()) progressBar.setForeground(Color.red);
+		progressBar.setForeground(Color.green);
+		if(progressBar.getValue() >= 5 && progressBar.getValue() < 8)progressBar.setForeground(Color.yellow);
+		else if(progressBar.getValue() >= 8 && progressBar.getValue() < progressBar.getMaximum())progressBar.setForeground(Color.orange);
+		else if(progressBar.getValue() == progressBar.getMaximum()) progressBar.setForeground(Color.red);
 	}
 	/**
 	 * check that machine is full or not if it full show message dialog
@@ -126,5 +140,4 @@ public class CoinMachineUI extends JFrame implements Observer{
 	public void checkProgressBar(){
 		if(Demo.coinMachineRun.isFull()) JOptionPane.showMessageDialog(this, "Machine is Full!", "Error !", JOptionPane.ERROR_MESSAGE);
 	}
-	
 }
