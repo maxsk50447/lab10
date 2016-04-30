@@ -65,8 +65,10 @@ public class CoinsUI extends JFrame implements Observer{
 		// TODO Auto-generated method stub
 		textField.setText(((CoinMachine) arg).getCount()+"");
 		accept.setText("Accepting Coins");
+		accept.setForeground(Color.GREEN);
 		if(Integer.parseInt(textField.getText())==Demo.capacity){
 			accept.setText("Machine is Full!");
+			accept.setForeground(Color.red);
 		}
 	}
 	

@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import coinmachine.*;
+import javafx.scene.layout.Border;
 
 /**
  * CoinMachine User Interface
@@ -20,6 +21,7 @@ public class CoinMachineUI extends JFrame implements Observer{
 	private JProgressBar progressBar;
 	private int currentBalance = 0;
 	private JLabel balance, status, insert;
+	private Border border;
 	/**
 	 * Create the application.
 	 */
@@ -87,8 +89,7 @@ public class CoinMachineUI extends JFrame implements Observer{
 		tenBahtButton.addActionListener(new coinButtonListener());
 	}
 	/**
-	 * coinButtonListener use for add to each button to make button can add money to the coin machine.
-	 *
+	 * ActionListener that use to insert the coin into the machine and show the message dialog
 	 */
 	class coinButtonListener implements ActionListener{
 
@@ -96,16 +97,20 @@ public class CoinMachineUI extends JFrame implements Observer{
 		public void actionPerformed(ActionEvent e) {
 			Object source = e.getSource();
 			Coin coin = null;
-			if(source == oneBahtButton) coin = new Coin(1);
-			else if(source == fiveBahtButton) coin = new Coin(5);
-			else if(source == tenBahtButton) coin = new Coin(10);
+			if(source == oneBahtButton) coin = new Coin(1,"Baht");
+			else if(source == fiveBahtButton) coin = new Coin(5,"Baht");
+			else if(source == tenBahtButton) coin = new Coin(10,"Baht");
+			System.out.println(coin + " inserted");
+			if(Demo.coinMachineRun.getCount() < Demo.coinMachineRun.getCapacity()-1)System.out.print("Values of coins to insart: ");
+			if(Demo.coinMachineRun.isFull()) System.out.println("Machine is Full!");
 			Demo.coinMachineRun.insert(coin);
 			checkProgressBar();
 		}
 		
 	}
 	/**
-	 * update when something happen
+	 * set the text of balance update follow the balance that you get from coinmachine
+	 * and set value of progressbar follow the count that
 	 */
 	@Override
 	public void update(Observable subject, Object info) {
@@ -113,9 +118,10 @@ public class CoinMachineUI extends JFrame implements Observer{
 		currentBalance = ((CoinMachine) info).getBalance();
 		balance.setText("Balance:   "+ currentBalance);
 		progressBar.setValue(((CoinMachine) info).getCount());
+		if(progressBar.getValue() == progressBar.getMaximum()) progressBar.setForeground(Color.red);
 	}
 	/**
-	 * check that ProgressBar is full or not if full show message dialog
+	 * check that machine is full or not if it full show message dialog
 	 */
 	public void checkProgressBar(){
 		if(Demo.coinMachineRun.isFull()) JOptionPane.showMessageDialog(this, "Machine is Full!", "Error !", JOptionPane.ERROR_MESSAGE);

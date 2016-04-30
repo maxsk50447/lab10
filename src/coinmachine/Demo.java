@@ -84,7 +84,9 @@ public class Demo {
 				}
 			}
 		});
+		demo.insertDialog(coinMachineRun);
 	}
+	
 }
 
 
